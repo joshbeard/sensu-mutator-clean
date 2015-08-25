@@ -26,8 +26,13 @@ require 'json'
 # parse event
 event = JSON.parse(STDIN.read, symbolize_names: true)
 
+# remove empty lines
 output = event[:check][:output].gsub!(/^$\n/, '')
 
+# convert dots in fqdn to underscores
+output.gsub!(event[:client][:name], event[:client][:name].gsub('.', '_'))
+
+# convert to lowercase
 if ARGV[0] == '-l' || ARGV[0] == '--lowercase'
   output.downcase!
 end
